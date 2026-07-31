@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Selamat Semhas, RubyKetsy!</title>
+<link rel="icon" href="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#6E5E80;
+    --navy-dark:#574A67;
+    --blue:#C9E3F5;
+    --blue-soft:#F1F8FE;
+    --cream:#FFFFFF;
+    --pink:#FBDCEA;
+    --gold:#F5C97B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Quicksand',sans-serif;
+    color:var(--navy);
+    background-color:#FFFFFF;
+    background-image:
+      radial-gradient(circle, rgba(201,227,245,.85) 3.5px, transparent 4px),
+      radial-gradient(circle, rgba(251,220,234,.85) 3.5px, transparent 4px),
+      radial-gradient(circle, rgba(245,201,123,.75) 3.5px, transparent 4px);
+    background-size:84px 84px;
+    background-position:0 0, 42px 42px, 42px 0;
+    overflow-x:hidden;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  .cursive{font-family:'Caveat',cursive;}
+  #app{
+    max-width:480px;
+    margin:0 auto;
+    position:relative;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  .screen{
+    display:none;
+    min-height:100vh;
+    min-height:100dvh;
+    width:100%;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:36px 22px 48px;
+    position:relative;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .screen.active{display:flex;animation:screenFade .55s ease;}
+  @keyframes screenFade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- floating + falling decor ---------- */
+  .floaty{position:absolute;width:34px;height:34px;object-fit:contain;opacity:.9;animation:floatY 4.5s ease-in-out infinite;pointer-events:none;}
+  @keyframes floatY{0%,100%{transform:translateY(0) rotate(-6deg);}50%{transform:translateY(-16px) rotate(6deg);}}
+  .particle{position:fixed;top:-40px;pointer-events:none;z-index:4;width:22px;height:22px;object-fit:contain;animation:fall linear forwards;}
+  .icon-inline{width:1.05em;height:1.05em;vertical-align:-0.18em;object-fit:contain;display:inline-block;}
+  @keyframes fall{to{transform:translateY(112vh) rotate(340deg);opacity:.35;}}
+
+  /* ---------- buttons (general) ---------- */
+  button{font-family:'Quicksand',sans-serif;cursor:pointer;}
+  button:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .btn-cta{
+    background:var(--navy);color:var(--cream);border:none;
+    padding:15px 34px;border-radius:999px;font-weight:700;font-size:1.08rem;
+    box-shadow:0 6px 0 var(--navy-dark);
+    animation:pulse 1.9s ease-in-out infinite;
+    transition:transform .15s;
+  }
+  .btn-cta:active{transform:translateY(5px);box-shadow:0 1px 0 var(--navy-dark);}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.045);}}
+  .btn-back{
+    position:absolute;top:18px;left:18px;background:var(--cream);
+    border:2px solid var(--navy);border-radius:999px;padding:7px 16px 7px 12px;
+    font-weight:600;font-size:.92rem;color:var(--navy);display:flex;align-items:center;gap:4px;
+    transition:transform .15s;z-index:3;
+  }
+  .btn-back:active{transform:scale(.94);}
+  .music-toggle{
+    position:fixed;top:16px;right:16px;z-index:20;width:42px;height:42px;border-radius:50%;
+    background:var(--cream);border:2px solid var(--navy);display:none;
+    align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(110,94,128,.25);
+  }
+  .music-toggle img{width:22px;height:22px;object-fit:contain;display:block;}
+  .music-toggle.show{display:flex;}
+
+  /* ---------- cover ---------- */
+  #screen-cover .eyebrow{font-size:1.05rem;font-weight:600;letter-spacing:.02em;margin-bottom:6px;}
+  #screen-cover .name{font-size:3.6rem;line-height:1;color:var(--navy);}
+  #screen-cover .occasion{font-size:1.5rem;margin-top:6px;}
+  .gift-icon{width:72px;height:72px;object-fit:contain;margin:22px 0;animation:floatY 3s ease-in-out infinite;filter:drop-shadow(0 5px 0 rgba(110,94,128,.15));}
+  #screen-cover .hint{margin-top:20px;font-size:.85rem;opacity:.75;max-width:240px;}
+  #screen-cover .sound-note{margin-top:12px;font-size:.8rem;opacity:.65;}
+
+  /* ---------- menu ---------- */
+  .menu-title{font-size:1.9rem;margin-bottom:22px;}
+  .menu-grid{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;width:100%;max-width:340px;}
+  .menu-img-btn{background:none;border:none;padding:0;cursor:pointer;border-radius:18px;}
+  .menu-img{width:132px;height:132px;object-fit:contain;display:block;transition:transform .2s ease;filter:drop-shadow(0 6px 0 rgba(110,94,128,.18));}
+  .menu-img-btn:hover .menu-img{transform:translateY(-6px) scale(1.06);}
+  .menu-img-btn:active .menu-img{transform:scale(.92);}
+  .menu-hint{margin-top:18px;font-size:1.05rem;}
+
+  /* ---------- gallery ---------- */
+  .section-heading{font-size:1.85rem;margin:8px 0 26px;}
+  .gallery-wrap{display:flex;flex-wrap:wrap;gap:22px 16px;justify-content:center;max-width:360px;}
+  .polaroid{background:#fff;border:2.5px solid var(--pink);padding:9px 9px 26px;border-radius:8px;width:118px;box-shadow:0 6px 0 rgba(110,94,128,.14);}
+  .polaroid:nth-child(1){transform:rotate(-7deg);}
+  .polaroid:nth-child(2){transform:rotate(5deg);}
+  .polaroid:nth-child(3){transform:rotate(-4deg);}
+  .polaroid:nth-child(4){transform:rotate(6deg);}
+  .polaroid:nth-child(5){transform:rotate(-6deg);}
+  .polaroid:nth-child(6){transform:rotate(4deg);}
+  .polaroid .photo{width:100%;aspect-ratio:1/1;border-radius:2px;object-fit:cover;display:block;background:linear-gradient(135deg,#C9E3F5,#FBDCEA);}
+  .polaroid .cap{font-family:'Caveat',cursive;font-size:1.05rem;text-align:center;margin-top:5px;color:var(--navy-dark);}
+
+  /* ---------- music ---------- */
+  .player-card{
+    background:#fff;border:3px solid var(--blue);border-radius:26px;
+    padding:22px 20px;width:100%;max-width:320px;display:flex;gap:16px;align-items:center;
+    box-shadow:0 6px 0 rgba(110,94,128,.14);
+  }
+  .disc{
+    width:76px;height:76px;border-radius:50%;flex-shrink:0;
+    background:radial-gradient(circle at center,var(--cream) 0 10px,var(--navy) 11px 30px,var(--cream) 31px 33px,var(--navy-dark) 34px 100%);
+    animation:spin 3.2s linear infinite;animation-play-state:paused;
+  }
+  .disc.playing{animation-play-state:running;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .track-info{text-align:left;flex:1;min-width:0;}
+  .track-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .track-artist{font-size:.82rem;opacity:.75;margin-top:2px;}
+  .player-controls{display:flex;align-items:center;gap:10px;margin-top:10px;}
+  .player-controls button{background:none;border:none;color:var(--navy);padding:4px;}
+  .player-controls button img{width:22px;height:22px;object-fit:contain;display:block;}
+  .player-controls button.play-pause{
+    background:var(--navy);color:var(--cream);width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+  }
+  .player-card-wrap{display:flex;flex-direction:column;gap:14px;align-items:center;}
+  .heart-star{display:flex;gap:14px;margin-top:2px;}
+  .heart-star button{background:none;border:none;}
+  .heart-star button img{width:24px;height:24px;object-fit:contain;display:block;}
+  .wiggle{animation:wig .35s ease;}
+  @keyframes wig{0%,100%{transform:scale(1);}50%{transform:scale(1.35);}}
+
+  /* ---------- notes ---------- */
+  .notes-card{background:#fff;border:3px solid var(--pink);border-radius:24px;padding:18px;width:100%;max-width:340px;box-shadow:0 6px 0 rgba(110,94,128,.14);}
+  .note-row{
+    display:flex;align-items:center;gap:10px;background:#fff;
+    border:2.5px solid var(--blue);border-radius:14px;padding:11px 14px;margin-bottom:10px;font-size:.92rem;font-weight:500;text-align:left;
+    box-shadow:0 4px 0 rgba(110,94,128,.12);
+  }
+  .note-row:last-child{margin-bottom:0;}
+  .note-row img{width:20px;height:20px;flex-shrink:0;object-fit:contain;}
+  .bouquet{display:flex;justify-content:center;gap:6px;margin:20px 0 6px;}
+  .bouquet img{width:38px;height:38px;object-fit:contain;}
+  .bouquet img:nth-child(1){transform:rotate(-18deg) translateY(4px);}
+  .bouquet img:nth-child(3){transform:rotate(18deg) translateY(4px);}
+
+  /* ---------- candle ---------- */
+  .candle-question{font-size:2rem;line-height:1.2;margin:10px 0 16px;color:var(--navy);}
+  .candle-img{width:200px;height:200px;object-fit:contain;filter:drop-shadow(0 6px 0 rgba(110,94,128,.16));animation:floatY 3.5s ease-in-out infinite;}
+  .choice-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:26px;}
+  .btn-ya{
+    background:var(--pink);border:2.5px solid var(--navy);color:var(--navy);
+    padding:13px 26px;border-radius:999px;font-weight:700;font-size:1rem;box-shadow:0 5px 0 var(--navy-dark);
+    transition:transform .15s;
+  }
+  .btn-ya:active{transform:translateY(4px);box-shadow:0 1px 0 var(--navy-dark);}
+  .btn-tidak{
+    background:#fff;border:2.5px solid var(--navy);color:var(--navy);
+    padding:13px 26px;border-radius:999px;font-weight:700;font-size:1rem;box-shadow:0 5px 0 var(--navy-dark);
+    transition:transform .15s;
+  }
+  .btn-tidak:active{transform:scale(.93);}
+  .shake{animation:shake .4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-9px);}75%{transform:translateX(9px);}}
+  .candle-instruction{margin:18px 0 14px;font-size:1rem;max-width:280px;min-height:1.5em;}
+
+  /* ---------- finale ---------- */
+  .finale-title{font-size:2.15rem;line-height:1.15;margin-bottom:18px;}
+  .finale-photo{
+    width:190px;background:#fff;border:3px solid var(--gold);padding:9px 9px 30px;border-radius:10px;
+    box-shadow:0 7px 0 rgba(110,94,128,.16);transform:rotate(-3deg);position:relative;margin-bottom:22px;
+  }
+  .finale-photo .photo{width:100%;aspect-ratio:1/1;border-radius:2px;overflow:hidden;background:linear-gradient(135deg,var(--blue),var(--pink));}
+  .finale-photo .photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .finale-photo .pin{position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(8deg);width:26px;height:26px;object-fit:contain;}
+  .letter-card{
+    background:#fff;border:3px solid var(--pink);border-radius:22px;
+    padding:22px;width:100%;max-width:340px;text-align:left;min-height:130px;
+    box-shadow:0 6px 0 rgba(110,94,128,.14);
+  }
+  #finale-message{font-size:.98rem;line-height:1.55;}
+  .cursor-blink{display:inline-block;width:2px;background:var(--navy);animation:blink .8s step-end infinite;margin-left:1px;}
+  @keyframes blink{50%{opacity:0;}}
+  .closing-note{margin-top:22px;font-size:.85rem;opacity:.7;}
+  .btn-replay{
+    margin-top:18px;background:none;border:2px solid var(--navy);color:var(--navy);
+    padding:9px 22px;border-radius:999px;font-weight:600;font-size:.9rem;
+  }
+
+  /* ---------- responsive: tablet ---------- */
+  @media (min-width:640px){
+    #app{max-width:720px;}
+    .screen{padding:42px 30px 56px;}
+    .menu-grid{max-width:600px;}
+    .menu-img{width:170px;height:170px;}
+    .gallery-wrap{max-width:640px;}
+    .polaroid{width:150px;}
+    .polaroid .cap{font-size:1.2rem;}
+    .notes-card,.letter-card{max-width:560px;}
+    .player-card{max-width:520px;}
+    .section-heading{font-size:2.2rem;}
+    .finale-photo{width:240px;}
+    .candle-img{width:230px;height:230px;}
+    .gift-icon{width:84px;height:84px;}
+    .floaty{width:42px;height:42px;}
+  }
+
+  /* ---------- responsive: desktop ---------- */
+  @media (min-width:1024px){
+    #app{max-width:1080px;}
+    .screen{padding:48px 40px 64px;}
+    .menu-grid{max-width:940px;}
+    .menu-img{width:200px;height:200px;}
+    .gallery-wrap{max-width:980px;}
+    .polaroid{width:180px;}
+    .polaroid .cap{font-size:1.3rem;}
+    .notes-card{max-width:700px;}
+    .note-row{padding:14px 18px;font-size:1.02rem;}
+    .player-card{max-width:620px;padding:26px;}
+    .track-title{font-size:1.1rem;}
+    .letter-card{max-width:620px;}
+    .finale-photo{width:280px;}
+    .candle-img{width:260px;height:260px;}
+    .gift-icon{width:96px;height:96px;}
+    .floaty{width:48px;height:48px;}
+    .btn-cta{font-size:1.2rem;padding:17px 40px;}
+    #screen-cover .name{font-size:5.2rem;}
+    #screen-cover .occasion{font-size:1.8rem;}
+    .section-heading{font-size:2.4rem;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+  </defs>
+</svg>
+
+<button id="music-toggle" class="music-toggle" onclick="toggleMusic()" aria-label="Nyalakan atau matikan musik"><img id="music-toggle-icon" src="download-removebg-preview.png" alt=""></button>
+
+<div id="app">
+
+  <!-- 1. COVER -->
+  <section id="screen-cover" class="screen active">
+    <img class="floaty" style="top:8%;left:8%;animation-duration:4s;" src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">
+    <img class="floaty" style="top:12%;right:10%;animation-duration:5s;animation-delay:.4s;" src="07942b0c6ea633eb046ac1c9fd28bfb3-removebg-preview.png" alt="">
+    <img class="floaty" style="bottom:16%;left:10%;animation-duration:4.6s;animation-delay:.8s;" src="download__1_-removebg-preview.png" alt="">
+    <img class="floaty" style="bottom:10%;right:8%;animation-duration:5.2s;animation-delay:.2s;" src="download-removebg-preview.png" alt="">
+    <img class="floaty" style="top:42%;left:4%;animation-duration:4.8s;animation-delay:1.1s;" src="5aac8a27ff2a8b0f9f87cf3262c7696a-removebg-preview.png" alt="">
+
+    <p class="eyebrow">Ada kejutan buat kamu <img class="icon-inline" src="download-removebg-preview.png" alt=""></p>
+    <h1 class="name cursive">RubyKetsy</h1>
+    <p class="occasion cursive">Selamat Seminar Hasil! <img class="icon-inline" src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt=""></p>
+    <img class="gift-icon" src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">
+    <button class="btn-cta" onclick="openGreeting()">Buka Ucapan <img class="icon-inline" src="download-removebg-preview.png" alt=""></button>
+    <p class="sound-note"><img class="icon-inline" src="download__1_-removebg-preview.png" alt=""> nyalain suara biar makin seru</p>
+  </section>
+
+  <!-- 2. MENU / HUB -->
+  <section id="screen-menu" class="screen">
+    <h2 class="menu-title cursive">Pilih salah satu, yuk!</h2>
+    <div class="menu-grid">
+      <button class="menu-img-btn" onclick="showScreen('screen-gallery')" aria-label="Momen"><img class="menu-img" src="975d7e8d1bc5207fbb1683762eac855c-removebg-preview.png" alt="Momen"></button>
+      <button class="menu-img-btn" onclick="showScreen('screen-music')" aria-label="Musik"><img class="menu-img" src="download-removebg-preview.png" alt="Musik"></button>
+      <button class="menu-img-btn" onclick="showScreen('screen-notes')" aria-label="Ucapan"><img class="menu-img" src="5aac8a27ff2a8b0f9f87cf3262c7696a-removebg-preview.png" alt="Ucapan"></button>
+      <button class="menu-img-btn" onclick="showScreen('screen-candle')" aria-label="Tiup Lilin"><img class="menu-img" src="9980bdfeed5ead6bdc3c99c13bf80443-removebg-preview.png" alt="Tiup Lilin"></button>
+    </div>
+    <p class="menu-hint cursive">klik salah satu untuk lanjut!</p>
+  </section>
+
+  <!-- 3. GALLERY -->
+  <section id="screen-gallery" class="screen">
+    <button class="btn-back" onclick="showScreen('screen-menu')">← Kembali</button>
+    <h2 class="section-heading cursive">Momen Perjuanganmu <img class="icon-inline" src="download-removebg-preview.png" alt=""></h2>
+    <div class="gallery-wrap">
+      <div class="polaroid"><img class="photo" src="r1.jpeg" alt=""><p class="cap">Momen kita main map pengantaran 2</p></div>
+      <div class="polaroid"><img class="photo" src="r2.jpeg" alt=""><p class="cap">Kita berdua summit mount dangdut</p></div>
+      <div class="polaroid"><img class="photo" src="r3.jpeg" alt=""><p class="cap">Ketika berhasil sampe di puncak antartika</p></div>
+      <div class="polaroid"><img class="photo" src="r4.jpeg" alt=""><p class="cap">Ini di mount WASD yg gweh jago banget</p></div>
+      <div class="polaroid"><img class="photo" src="r5.jpeg" alt=""><p class="cap">Ada anomali dibelakang</p></div>
+      <div class="polaroid"><img class="photo" src="r6.jpeg" alt=""><p class="cap">Ni yang terakhir</p></div>
+    </div>
+  </section>
+
+  <!-- 4. MUSIC -->
+  <section id="screen-music" class="screen">
+    <button class="btn-back" onclick="showScreen('screen-menu')">← Kembali</button>
+    <h2 class="section-heading cursive">Lagu Buat Nemenin <img class="icon-inline" src="download__1_-removebg-preview.png" alt=""></h2>
+    <div class="player-card-wrap">
+      <div class="player-card">
+        <div class="disc" id="disc"></div>
+        <div class="track-info">
+          <p class="track-title">MANGU</p>
+          <p class="track-artist">khusus buat kamu</p>
+          <div class="player-controls">
+            <button onclick="wiggle(this)" aria-label="Sebelumnya"><img src="download__1_-removebg-preview.png" alt=""></button>
+            <button class="play-pause" id="play-pause-btn" onclick="toggleMusic()" aria-label="Putar atau jeda"><img id="play-pause-icon" src="5aac8a27ff2a8b0f9f87cf3262c7696a-removebg-preview.png" alt=""></button>
+            <button onclick="wiggle(this)" aria-label="Berikutnya"><img src="975d7e8d1bc5207fbb1683762eac855c-removebg-preview.png" alt=""></button>
+          </div>
+        </div>
+      </div>
+      <div class="heart-star">
+        <button onclick="toggleIcon(this,'download-removebg-preview.png','download__1_-removebg-preview.png')" aria-label="Suka"><img src="download-removebg-preview.png" alt=""></button>
+        <button onclick="toggleIcon(this,'9980bdfeed5ead6bdc3c99c13bf80443-removebg-preview.png','Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png')" aria-label="Favorit"><img src="9980bdfeed5ead6bdc3c99c13bf80443-removebg-preview.png" alt=""></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SWEET NOTES -->
+  <section id="screen-notes" class="screen">
+    <button class="btn-back" onclick="showScreen('screen-menu')">← Kembali</button>
+    <h2 class="section-heading cursive">Ucapan Buat Kamu <img class="icon-inline" src="9980bdfeed5ead6bdc3c99c13bf80443-removebg-preview.png" alt=""></h2>
+    <div class="notes-card">
+      <div class="note-row"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">Selamat ket</div>
+      <div class="note-row"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">Jangan tidur kek keboo, tolong di  ubah itu kebiasan nya</div>
+      <div class="note-row"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">Semangat dikit lagi selesai</div>
+      <div class="note-row"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">Jangan main roblox mulu</div>
+      <div class="note-row"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">Ntar  wifi lu di cabut lagi</div>
+      <div class="note-row"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt="">Sekali lagi SEMANGAT!!!!</div>
+    </div>
+    <div class="bouquet"><img src="download-removebg-preview.png" alt=""><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt=""><img src="download-removebg-preview.png" alt=""></div>
+  </section>
+
+  <!-- 6. CANDLE -->
+  <section id="screen-candle" class="screen">
+    <button class="btn-back" onclick="showScreen('screen-menu')">← Kembali</button>
+    <h2 class="section-heading cursive">Waktunya Merayakan! <img class="icon-inline" src="9980bdfeed5ead6bdc3c99c13bf80443-removebg-preview.png" alt=""></h2>
+    <p class="candle-question cursive">guweh ganteng gaaaa!!!</p>
+    <img class="candle-img" src="5aac8a27ff2a8b0f9f87cf3262c7696a-removebg-preview.png" alt="">
+    <div class="choice-btns">
+      <button class="btn-ya" onclick="yesClicked()">iyaa ganteng banget</button>
+      <button class="btn-tidak" id="btn-no" onclick="noClicked(this)" onmouseenter="dodgeNo(this)" ontouchstart="dodgeNo(this)">tidak</button>
+    </div>
+    <p class="candle-instruction" id="no-hint"></p>
+  </section>
+
+  <!-- 7. FINALE -->
+  <section id="screen-finale" class="screen">
+    <h2 class="finale-title cursive">Selamat Seminar Hasil,<br>RubyKetsy!</h2>
+    <div class="finale-photo">
+      <img class="pin" src="download-removebg-preview.png" alt="">
+      <div class="photo"><img src="Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png" alt=""></div>
+    </div>
+    <div class="letter-card">
+      <p id="finale-message"></p>
+    </div>
+    <p class="closing-note">dibuat dengan <img class="icon-inline" src="download-removebg-preview.png" alt=""> khusus untuk RubyKetsy</p>
+    <button class="btn-replay" onclick="showScreen('screen-cover')">Putar Ulang</button>
+  </section>
+
+</div>
+
+<audio id="bg-music" src="MANGU.mpeg" loop></audio>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.4/confetti.min.js"></script>
+<script>
+  const bgMusic = document.getElementById('bg-music');
+  const musicToggleBtn = document.getElementById('music-toggle');
+  const disc = document.getElementById('disc');
+  let particleTimer = null;
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function burst(x, y){
+    if (typeof confetti !== 'function') return;
+    confetti({
+      particleCount: 90,
+      spread: 75,
+      startVelocity: 38,
+      origin: { x: x !== undefined ? x : 0.5, y: y !== undefined ? y : 0.6 },
+      colors: ['#6E5E80','#C9E3F5','#FBDCEA','#F5C97B','#FFF9EF']
+    });
+  }
+
+  function openGreeting(){
+    burst(0.5, 0.7);
+    bgMusic.play().then(() => {
+      setPlayingState(true);
+    }).catch(() => {
+      setPlayingState(false);
+    });
+    musicToggleBtn.classList.add('show');
+    showScreen('screen-menu');
+    startAmbientParticles();
+  }
+
+  function setPlayingState(playing){
+    const musicIcon = document.getElementById('music-toggle-icon');
+    const ppIcon = document.getElementById('play-pause-icon');
+    if(playing){
+      disc.classList.add('playing');
+      musicIcon.setAttribute('src', 'download-removebg-preview.png');
+      ppIcon.setAttribute('src', '5aac8a27ff2a8b0f9f87cf3262c7696a-removebg-preview.png');
+    } else {
+      disc.classList.remove('playing');
+      musicIcon.setAttribute('src', 'download__1_-removebg-preview.png');
+      ppIcon.setAttribute('src', '975d7e8d1bc5207fbb1683762eac855c-removebg-preview.png');
+    }
+  }
+
+  function toggleMusic(){
+    if(bgMusic.paused){
+      bgMusic.play().then(() => setPlayingState(true)).catch(() => setPlayingState(false));
+    } else {
+      bgMusic.pause();
+      setPlayingState(false);
+    }
+  }
+
+  function wiggle(el){
+    el.classList.remove('wiggle');
+    void el.offsetWidth;
+    el.classList.add('wiggle');
+  }
+
+  function toggleIcon(el, offSrc, onSrc){
+    const img = el.querySelector('img');
+    img.setAttribute('src', img.getAttribute('src') === offSrc ? onSrc : offSrc);
+    wiggle(el);
+  }
+
+  function startAmbientParticles(){
+    if(particleTimer) return;
+    const images = [
+      '07942b0c6ea633eb046ac1c9fd28bfb3-removebg-preview.png',
+      '5aac8a27ff2a8b0f9f87cf3262c7696a-removebg-preview.png',
+      '975d7e8d1bc5207fbb1683762eac855c-removebg-preview.png',
+      '9980bdfeed5ead6bdc3c99c13bf80443-removebg-preview.png',
+      'Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png',
+      'download__1_-removebg-preview.png',
+      'download-removebg-preview.png'
+    ];
+    particleTimer = setInterval(() => {
+      const p = document.createElement('img');
+      p.className = 'particle';
+      p.alt = '';
+      p.setAttribute('src', images[Math.floor(Math.random()*images.length)]);
+      p.style.left = Math.random()*96 + 'vw';
+      p.style.width = (1 + Math.random()*0.8) + 'rem';
+      const duration = 5 + Math.random()*3;
+      p.style.animationDuration = duration + 's';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), duration*1000 + 200);
+    }, 550);
+  }
+
+  function yesClicked(){
+    burst(0.5, 0.6);
+    setTimeout(() => burst(0.25, 0.5), 200);
+    setTimeout(() => burst(0.75, 0.5), 350);
+    showScreen('screen-finale');
+    typewriter();
+  }
+
+  function noClicked(btn){
+    const hint = document.getElementById('no-hint');
+    hint.textContent = 'Eits, jawabannya salah!';
+    btn.classList.add('shake');
+    setTimeout(() => btn.classList.remove('shake'), 450);
+  }
+
+  function dodgeNo(btn){
+    btn.style.position = 'fixed';
+    btn.style.left = Math.max(10, Math.random()*(window.innerWidth - 150)) + 'px';
+    btn.style.top = Math.max(10, Math.random()*(window.innerHeight - 80)) + 'px';
+    btn.style.zIndex = '9';
+  }
+
+  function typewriter(){
+    const el = document.getElementById('finale-message');
+    const text = 'Selamat ya, Ket! Semua  Usaha lu, kerja keras akhirnya sampe di titik ini. Semhas ini bukti dari usaha dan kerja keras lu — tinggal satu langkah lagi menuju sidang akhir. Moga lancar, dan tetap semnagat jangan gampang menyerah. Jangan mikirin yang aneh", fokus sama diri lu sendiri  dulu aja. Satu pesan terakhir, Tolong lupain itu cindo!!!!. mwhehee';
+    el.textContent = '';
+    let i = 0;
+    (function tick(){
+      if(i <= text.length){
+        el.textContent = text.slice(0, i);
+        i++;
+        setTimeout(tick, 26);
+      } else {
+        const img = document.createElement('img');
+        img.setAttribute('src', 'Cute_Chibi_Dinosaur_Drawing_---_Simple_and_Adorable____-removebg-preview.png');
+        img.alt = '';
+        img.style.cssText = 'width:1.15em;height:1.15em;vertical-align:-0.2em;margin-left:3px;display:inline-block;';
+        el.appendChild(img);
+      }
+    })();
+  }
+</script>
+</body>
+</html>
